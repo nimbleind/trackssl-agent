@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"os"
 )
 
 var DEFAULT_TRACKSSL_URL = "https://home.andylibby.org"
@@ -14,6 +13,7 @@ var DEFAULT_TRACKSSL_URL = "https://home.andylibby.org"
 type CreateResponse struct {
 	Message string `json:"message"`
 }
+
 type Client struct {
 	TracksslUrl string
 	AuthToken   string
@@ -21,41 +21,8 @@ type Client struct {
 }
 
 var (
-	ERROR_NO_AUTH_TOKEN     = fmt.Errorf("No auth token")
-
-	ERROR_NO_AGENT_TOKEN    = fmt.Errorf("No agent token")
 	ERROR_CONNECTION_FAILED = fmt.Errorf("Connection failed")
 )
-
-func (c *Client) checkValues() error {
-	if c.AuthToken == "" {
-		return ERROR_NO_AUTH_TOKEN
-	}
-
-	if c.AgentToken == "" {
-		return ERROR_NO_AGENT_TOKEN
-	}
-
-	return nil
-}
-
-func NewClient() (*Client, error) {
-	client := &Client{
-		TracksslUrl: os.Getenv("TRACKSSL_URL"),
-		AuthToken:   os.Getenv("TRACKSSL_AUTH_TOKEN"),
-		AgentToken:  os.Getenv("TRACKSSL_AGENT_TOKEN"),
-	}
-
-	if client.TracksslUrl == "" {
-		client.TracksslUrl = DEFAULT_TRACKSSL_URL
-	}
-
-	if err := client.checkValues(); err != nil {
-		return nil, err
-	}
-
-	return client, nil
-}
 
 func (c *Client) DomainsUrl() string {
 	return fmt.Sprintf("%s/api/v1/agents/%s/domains.json", c.TracksslUrl, c.AgentToken)

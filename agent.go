@@ -4,15 +4,25 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"encoding/pem"
+	"flag"
 	"fmt"
 	"net"
+	"os"
 	"time"
 	"trackssl.com/agent/client"
 )
 
-var SLEEP_DURATION = 5 * time.Minute
+var (
+	DEFAULT_TRACKSSL_URL = "https://trackssl.com"
+	SLEEP_DURATION       = 5 * time.Minute
+	ERROR_NO_AUTH_TOKEN  = fmt.Errorf("No auth token")
+	ERROR_NO_AGENT_TOKEN = fmt.Errorf("No agent token")
+)
 
 type Agent struct {
+	TracksslUrl *string
+	AuthToken   *string
+	AgentToken  *string
 }
 
 func (a *Agent) fetchCert(domain client.Domain) *x509.Certificate {
@@ -30,19 +40,45 @@ func (a *Agent) fetchCert(domain client.Domain) *x509.Certificate {
 	return tlsConn.ConnectionState().PeerCertificates[0]
 }
 
-func NewAgent() *Agent {
-	return &Agent{}
+func (a *Agent) checkConfig() error {
+	if a.AuthToken == nil {
+		return ERROR_NO_AUTH_TOKEN
+	}
+
+	if a.AgentToken == nil {
+		return ERROR_NO_AGENT_TOKEN
+	}
+
+	return nil
+}
+
+func NewAgent() (*Agent, error) {
+	agent := &Agent{}
+
+	agent.TracksslUrl = flag.String("trackssl-url", os.Getenv("TRACKSSL_URL"), "TrackSSL URL")
+	agent.AuthToken = flag.String("auth-token", os.Getenv("TRACKSSL_AUTH_TOKEN"), "TrackSSL Auth Token")
+	agent.AgentToken = flag.String("agent-token", os.Getenv("TRACKSSL_AGENT_TOKEN"), "TrackSSL Agent Token")
+	flag.Parse()
+
+	if *agent.TracksslUrl == "" {
+		agent.TracksslUrl = &DEFAULT_TRACKSSL_URL
+	}
+
+	return agent, agent.checkConfig()
+}
+
+func (a *Agent) NewClient() *client.Client {
+	return &client.Client{
+		TracksslUrl: *a.TracksslUrl,
+		AuthToken:   *a.AuthToken,
+		AgentToken:  *a.AgentToken,
+	}
 }
 
 func (a *Agent) run() {
-	client, err := client.NewClient()
+	client := a.NewClient()
 
-	if err != nil {
-		fmt.Println("Error creating client")
-		fmt.Println(err)
-	}
-
-	fmt.Println("TrackSSL Agent started...")
+	fmt.Println("TrackSSL Agent(Go) started...")
 
 	for {
 		fmt.Println("Retriving domain list...")
@@ -62,6 +98,11 @@ func (a *Agent) run() {
 }
 
 func main() {
-	agent := NewAgent()
+	agent, err := NewAgent()
+
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 	agent.run()
 }
