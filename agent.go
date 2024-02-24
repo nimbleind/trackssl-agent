@@ -3,63 +3,24 @@ package main
 import (
 	"crypto/tls"
 	"crypto/x509"
-	"encoding/json"
+	"encoding/pem"
 	"fmt"
-	"io"
 	"net"
-	"net/http"
-	"os"
+	"time"
+	"trackssl.com/agent/client"
 )
 
-type AgentCfg struct {
-	AgentUrl   string
-	AuthToken  string
-	AgentToken string
-}
-
-func NewAgentCfg() *AgentCfg {
-	url := os.Getenv("TRACKSSL_AGENT_URL")
-
-	if url == "" {
-		url = "https://home.andylibby.org:443"
-	}
-
-	return &AgentCfg{
-		AgentUrl:   url,
-		AuthToken:  os.Getenv("TRACKSSL_AUTH_TOKEN"),
-		AgentToken: os.Getenv("TRACKSSL_AGENT_TOKEN"),
-	}
-}
+var SLEEP_DURATION = 5 * time.Minute
 
 type Agent struct {
-	AgentCfg *AgentCfg
 }
 
-func (a *Agent) DomainsUrl() string {
-	return fmt.Sprintf("%s/api/v1/agents/%s/domains.json", a.AgentCfg.AgentUrl, a.AgentCfg.AgentToken)
-}
-
-func (a *Agent) fetchDomains() []Domain {
-	client := &http.Client{}
-
-	req, _ := http.NewRequest("GET", a.DomainsUrl(), nil)
-	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", a.AgentCfg.AuthToken))
-
-	resp, _ := client.Do(req)
-	defer resp.Body.Close()
-	body, _ := io.ReadAll(resp.Body)
-
-	response := Response{}
-	json.Unmarshal(body, &response)
-	return response.Data
-}
-
-func (a *Agent) fetchCert(domain Domain) *x509.Certificate {
+func (a *Agent) fetchCert(domain client.Domain) *x509.Certificate {
 	conn, _ := net.Dial("tcp", domain.String())
 
 	tlsCfg := &tls.Config{
 		InsecureSkipVerify: true,
-		ServerName: domain.Hostname,
+		ServerName:         domain.Hostname,
 	}
 
 	tlsConn := tls.Client(conn, tlsCfg)
@@ -70,8 +31,37 @@ func (a *Agent) fetchCert(domain Domain) *x509.Certificate {
 }
 
 func NewAgent() *Agent {
-	return &Agent{
-		AgentCfg: NewAgentCfg(),
+	return &Agent{}
+}
+
+func (a *Agent) run() {
+	client, err := client.NewClient()
+
+	if err != nil {
+		fmt.Println("Error creating client")
+		fmt.Println(err)
+	}
+
+	fmt.Println("TrackSSL Agent started...")
+
+	for {
+		fmt.Println("Retriving domain list...")
+		domains := client.FetchDomains()
+		fmt.Printf("Retrieved %d domains\n", len(domains))
+		fmt.Println("Fetching certificates...")
+		for _, domain := range domains {
+			c := a.fetchCert(*domain)
+			domain.Cert = string(pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: c.Raw}))
+			client.SendCert(domain)
+		}
+
+		fmt.Printf("Sleeping for %s\n", SLEEP_DURATION)
+		fmt.Printf("Next run at %s\n", time.Now().Add(SLEEP_DURATION))
+		time.Sleep(SLEEP_DURATION)
 	}
 }
 
+func main() {
+	agent := NewAgent()
+	agent.run()
+}
