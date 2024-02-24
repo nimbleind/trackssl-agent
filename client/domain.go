@@ -1,10 +1,10 @@
 package client
 
 type Domain struct {
-		DomainID int              `json:"domain_id"`
-		Hostname string           `json:"hostname"`
-		Port     string           `json:"port"`
-		Cert     string        `json:"certificate"`
+	DomainID int    `json:"domain_id"`
+	Hostname string `json:"hostname"`
+	Port     string `json:"port"`
+	Cert     string `json:"certificate"`
 }
 
 type DomainRequest struct {
