@@ -62,23 +62,31 @@ func (c *Client) SendCert(domain *Domain) error {
 	return nil
 }
 
-func (c *Client) FetchDomains() []*Domain {
+func (c *Client) FetchDomains() ([]*Domain, error) {
 	http_client := &http.Client{}
 
 	req, err := http.NewRequest("GET", c.DomainsUrl(), nil)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", c.AuthToken))
 
 	resp, err := http_client.Do(req)
-	if err != nil {
-		panic(err)
-	}
-	defer resp.Body.Close()
-	body, _ := io.ReadAll(resp.Body)
 
-	response := DomainResponse{}
-	json.Unmarshal(body, &response)
-	return response.Data
+	if err != nil {
+		fmt.Println(fmt.Errorf("Failed to fetch domains from TrackSSL: %v", err))
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+
+	if resp.StatusCode != 200 {
+		return nil, fmt.Errorf("Failed to fetch domains from TrackSSL: %d", resp.StatusCode)
+	} else {
+		body, _ := io.ReadAll(resp.Body)
+
+		response := DomainResponse{}
+		json.Unmarshal(body, &response)
+		return response.Data, nil
+	}
 }

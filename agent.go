@@ -78,17 +78,24 @@ func (a *Agent) NewClient() *client.Client {
 func (a *Agent) run() {
 	client := a.NewClient()
 
-	fmt.Println("TrackSSL Agent(Go) started...")
+	fmt.Printf("Initializing TrackSSL agent with interval %v\n", SLEEP_DURATION)
 
 	for {
 		fmt.Println("Retriving domain list...")
-		domains := client.FetchDomains()
-		fmt.Printf("Retrieved %d domains\n", len(domains))
-		fmt.Println("Fetching certificates...")
-		for _, domain := range domains {
-			c := a.fetchCert(*domain)
-			domain.Cert = string(pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: c.Raw}))
-			client.SendCert(domain)
+		domains, err := client.FetchDomains()
+
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		if len(domains) > 0 {
+				fmt.Printf("Retrieved %d domains\n", len(domains))
+				fmt.Println("Fetching certificates...")
+				for _, domain := range domains {
+				c := a.fetchCert(*domain)
+				domain.Cert = string(pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: c.Raw}))
+				client.SendCert(domain)
+				}
 		}
 
 		fmt.Printf("Sleeping for %s\n", SLEEP_DURATION)
