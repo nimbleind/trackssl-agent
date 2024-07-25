@@ -8,8 +8,6 @@ import (
 	"net/http"
 )
 
-var DEFAULT_TRACKSSL_URL = "https://app.trackssl.com"
-
 type CreateResponse struct {
 	Message string `json:"message"`
 }

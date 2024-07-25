@@ -13,7 +13,7 @@ import (
 )
 
 var (
-	DEFAULT_TRACKSSL_URL = "https://trackssl.com"
+	DEFAULT_TRACKSSL_URL = "https://app.trackssl.com"
 	SLEEP_DURATION       = 5 * time.Minute
 	ERROR_NO_AUTH_TOKEN  = fmt.Errorf("No auth token")
 	ERROR_NO_AGENT_TOKEN = fmt.Errorf("No agent token")
