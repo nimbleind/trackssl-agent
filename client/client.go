@@ -32,8 +32,14 @@ func (c *Client) CertificateUrl() string {
 
 func (c *Client) SendCert(domain *Domain) error {
 	http_client := &http.Client{}
-	json_data, _ := json.MarshalIndent(DomainRequest{Data: domain}, "", "  ")
-	req, _ := http.NewRequest("POST", c.CertificateUrl(), bytes.NewBuffer(json_data))
+	json_data, err := json.MarshalIndent(DomainRequest{Data: domain}, "", "  ")
+	if err != nil {
+		return err
+	}
+	req, err := http.NewRequest("POST", c.CertificateUrl(), bytes.NewBuffer(json_data))
+	if err != nil {
+		return err
+	}
 	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", c.AuthToken))
 	req.Header.Add("Content-Type", "application/json")
 

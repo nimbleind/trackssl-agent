@@ -25,8 +25,11 @@ type Agent struct {
 	AgentToken  *string
 }
 
-func (a *Agent) fetchCert(domain client.Domain) *x509.Certificate {
-	conn, _ := net.Dial("tcp", domain.String())
+func (a *Agent) fetchCert(domain client.Domain) (*x509.Certificate, error) {
+	conn, err := net.Dial("tcp", domain.String())
+	if err != nil {
+		return nil, fmt.Errorf("Error connecting %s: %s", domain.String(), err)
+	}
 
 	tlsCfg := &tls.Config{
 		InsecureSkipVerify: true,
@@ -37,7 +40,7 @@ func (a *Agent) fetchCert(domain client.Domain) *x509.Certificate {
 	tlsConn.Handshake()
 	defer conn.Close()
 
-	return tlsConn.ConnectionState().PeerCertificates[0]
+	return tlsConn.ConnectionState().PeerCertificates[0], nil
 }
 
 func (a *Agent) checkConfig() error {
@@ -89,13 +92,25 @@ func (a *Agent) run() {
 		}
 
 		if len(domains) > 0 {
-				fmt.Printf("Retrieved %d domains\n", len(domains))
-				fmt.Println("Fetching certificates...")
-				for _, domain := range domains {
-				c := a.fetchCert(*domain)
-				domain.Cert = string(pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: c.Raw}))
-				client.SendCert(domain)
+			fmt.Printf("Retrieved %d domains\n", len(domains))
+			fmt.Println("Fetching certificates...")
+			for _, domain := range domains {
+				c, err := a.fetchCert(*domain)
+
+				if err != nil {
+					fmt.Println(err)
+					domain.Error = fmt.Sprintf("%s", err)
+					domain.Cert = ""
+				} else {
+					domain.Cert = string(pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: c.Raw}))
 				}
+
+				err = client.SendCert(domain)
+				if err != nil {
+					fmt.Printf("Failed to send certificate for %s: %s\n", domain.Hostname, err)
+				}
+
+			}
 		}
 
 		fmt.Printf("Sleeping for %s\n", SLEEP_DURATION)

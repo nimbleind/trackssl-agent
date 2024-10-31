@@ -4,7 +4,8 @@ type Domain struct {
 	DomainID int    `json:"domain_id"`
 	Hostname string `json:"hostname"`
 	Port     string `json:"port"`
-	Cert     string `json:"certificate"`
+	Cert    string `json:"certificate"`
+	Error   string `json:"error"`
 }
 
 type DomainRequest struct {
