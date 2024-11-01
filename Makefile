@@ -1,4 +1,6 @@
 
+test:
+	@go test -v ./...
 
 agent: *.go
 	@go build -o agent *.go

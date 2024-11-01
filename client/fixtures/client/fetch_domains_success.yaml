@@ -1,0 +1,53 @@
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: home.andylibby.org
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Authorization:
+                - Bearer 10644d067a80b7ad97b151d6e9fb954ab4b264ebd0860a8912596ce907aa97d4a13221125b634dfbdc7401e1d31f1a13b7aef2e415f0c61b9377190dd87d813e
+        url: https://home.andylibby.org/api/v1/agents/tucKuJPTYhTSEbEYi2uCk5iT/domains.json
+        method: GET
+      response:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        transfer_encoding:
+            - chunked
+        trailer: {}
+        content_length: -1
+        uncompressed: false
+        body: '{"data":[{"domain_id":34027,"hostname":"morekidsonbikespa.org","port":"443"},{"domain_id":36200,"hostname":"no-common-name.badssl.com","port":"443"},{"domain_id":49608,"hostname":"monitor-us-west.statusgator.com","port":"443"}]}'
+        headers:
+            Cache-Control:
+                - max-age=0, private, must-revalidate
+            Content-Security-Policy:
+                - base-uri 'none'; report-uri https://report.trackcsp.com/v1/58ec9e18-748b-4dc0-b451-96d97d622f67
+            Content-Security-Policy-Report-Only:
+                - script-src 'self' 'unsafe-inline' 'unsafe-eval' js-agent.newrelic.com bam.nr-data.net www.googletagmanager.com js.stripe.com chimpstatic.com rebound.postmarkapp.com js.driftt.com; report-uri https://test-report.trackcsp.com/v1/58ec9e18-748b-4dc0-b451-96d97d622f67
+            Content-Type:
+                - application/json; charset=utf-8
+            Etag:
+                - W/"b6be30b3c0113a19889c533a0daea431"
+            Server-Timing:
+                - sql.active_record;dur=85.93, start_processing.action_controller;dur=0.06, instantiation.active_record;dur=52.35, render_template.action_view;dur=23.37, process_action.action_controller;dur=144.91
+            Set-Cookie:
+                - _ssltracker_session=TZFCWF9V50q7buoA9PaU0gZmYpNSG9%2FWj2BrvM%2FvYLM1PIZUllPGqho9nQseKosKkkklJb4FYL2fqdtDOGqs%2BftOYfWQg7XZb%2Fj9ISnApwYcLrUp5KMSU4QhS9MJSCaDvHvkT8L8pkv5b6e1UFM%2Fh6V0InqB3jyhxRUCXsKqcFeRPGjTcfKdafeAauPrds7%2BcbI6JrKxNrr7AgnYNoiZALRjG9KiPKZZ2ffzIFgcdVDJi7PNVuAzNgWyAmxsadHiFxT%2FNuEOL%2FJbtcEDloCjfsAKmFxim%2BCgOkR3OQzkXQ%3D%3D--OH4xClLj%2FwC9Wx8h--YXUS%2FntJIIAVUcsF718ozg%3D%3D; path=/; HttpOnly; SameSite=Lax; secure
+            X-Request-Id:
+                - 99bd3ad5-e10d-4503-98ad-d30d710686e4
+            X-Runtime:
+                - "0.291951"
+        status: 200 OK
+        code: 200
+        duration: 353.978188ms
