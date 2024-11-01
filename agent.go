@@ -20,9 +20,9 @@ var (
 )
 
 type Agent struct {
-	TracksslUrl *string
-	AuthToken   *string
-	AgentToken  *string
+	TracksslUrl   *string
+	AuthToken     *string
+	AgentToken    *string
 	SleepDuration time.Duration
 }
 
