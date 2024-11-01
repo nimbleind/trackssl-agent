@@ -16,6 +16,7 @@ type Client struct {
 	TracksslUrl string
 	AuthToken   string
 	AgentToken  string
+	HttpClient  *http.Client
 }
 
 var (
@@ -32,13 +33,19 @@ func (c *Client) CertificateUrl() string {
 
 func (c *Client) SendCert(domain *Domain) error {
 	http_client := &http.Client{}
+
+	if c.HttpClient != nil {
+		http_client = c.HttpClient
+	}
+
 	json_data, err := json.MarshalIndent(DomainRequest{Data: domain}, "", "  ")
 	if err != nil {
-		return err
+		return fmt.Errorf("Failed to marshal domain: %v", err)
 	}
 	req, err := http.NewRequest("POST", c.CertificateUrl(), bytes.NewBuffer(json_data))
+
 	if err != nil {
-		return err
+		return fmt.Errorf("Failed to create request: %v", err)
 	}
 	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", c.AuthToken))
 	req.Header.Add("Content-Type", "application/json")
@@ -51,12 +58,11 @@ func (c *Client) SendCert(domain *Domain) error {
 
 	defer resp.Body.Close()
 	body, _ := io.ReadAll(resp.Body)
-
 	response := CreateResponse{}
 	err = json.Unmarshal(body, &response)
 
 	if err != nil {
-		return err
+		return fmt.Errorf("Failed to unmarshal response: %v", err)
 	}
 
 	if response.Message != "created" {
@@ -68,6 +74,10 @@ func (c *Client) SendCert(domain *Domain) error {
 
 func (c *Client) FetchDomains() ([]*Domain, error) {
 	http_client := &http.Client{}
+
+	if c.HttpClient != nil {
+		http_client = c.HttpClient
+	}
 
 	req, err := http.NewRequest("GET", c.DomainsUrl(), nil)
 	if err != nil {
