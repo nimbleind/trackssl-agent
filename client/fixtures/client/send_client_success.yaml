@@ -1,0 +1,64 @@
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 1995
+        transfer_encoding: []
+        trailer: {}
+        host: home.andylibby.org
+        remote_addr: ""
+        request_uri: ""
+        body: |-
+            {
+              "domain": {
+                "domain_id": 34027,
+                "hostname": "morekidsonbikespa.org",
+                "port": "",
+                "certificate": "-----BEGIN CERTIFICATE-----\nMIIFEzCCA/ugAwIBAgISA3px31w/AXQtNrhKVqxlqvDqMA0GCSqGSIb3DQEBCwUA\nMDMxCzAJBgNVBAYTAlVTMRYwFAYDVQQKEw1MZXQncyBFbmNyeXB0MQwwCgYDVQQD\nEwNSMTEwHhcNMjQxMDA4MTEzODQ3WhcNMjUwMTA2MTEzODQ2WjAgMR4wHAYDVQQD\nExVtb3Jla2lkc29uYmlrZXNwYS5vcmcwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAw\nggEKAoIBAQDPqou5XNkz/MayvR/a5jrV9choOIWLsRtyR2id9+lVYiyHLuiHgF1v\n0LX7WqjBnAhiOi716zHwqaGYK8aQxkXtNzpJox0QHFJAaCRThgPaqjRPM9TUpYLL\nN3Aw5jCG8HQUkXTzy9W98n4IuGAsDQhCDgWhSzVa2hU3dh8Jw3WlYVEmjkTLQ8CJ\naY+yQFQ6JspByIIgsNYVTf7IiKlLODAcpx9zB/A0nkUSB6Q70AhUKnnLieSWh1L7\nIVZB3YMwaisYes8iCnA3XDTzHdLLcq9zga1DwCqjIEzkaZm9hikYuI+yb3rpifED\nvzCWCVpylExUA5C/rFu729MioUZytPrtAgMBAAGjggIyMIICLjAOBgNVHQ8BAf8E\nBAMCBaAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAwGA1UdEwEB/wQC\nMAAwHQYDVR0OBBYEFPeQSZtWcaGvtefm0JBAg0re3xjOMB8GA1UdIwQYMBaAFMXP\nRqTq9MPAemyVxC2wXpIvJuO5MFcGCCsGAQUFBwEBBEswSTAiBggrBgEFBQcwAYYW\naHR0cDovL3IxMS5vLmxlbmNyLm9yZzAjBggrBgEFBQcwAoYXaHR0cDovL3IxMS5p\nLmxlbmNyLm9yZy8wOwYDVR0RBDQwMoIVbW9yZWtpZHNvbmJpa2VzcGEub3Jnghl3\nd3cubW9yZWtpZHNvbmJpa2VzcGEub3JnMBMGA1UdIAQMMAowCAYGZ4EMAQIBMIIB\nAgYKKwYBBAHWeQIEAgSB8wSB8ADuAHUAouMK5EXvva2bfjjtR2d3U9eCW4SU1yte\nGyzEuVCkR+cAAAGSbCJA6AAABAMARjBEAiAtcWySzYA+R8tmFZOMgxrGW3jfffYG\niHL336U2wCyO7AIgGkzR50uwPe5GPCBhVxK/MWquTfQ0OQcl2iFq0Fp7a3IAdQDg\nkrP8DB3I52g2H95huZZNClJ4GYpy1nLEsE2lbW9UBAAAAZJsIkE6AAAEAwBGMEQC\nIHugd5n1HYin29qKJXQJZ6CAaBP3Yaylv98apH0SVYN8AiAoqsClGTnEUyE57TcK\n8zWHpwaKeUQzJAnYS7kC/f23FzANBgkqhkiG9w0BAQsFAAOCAQEAY8SQZcK2RNS9\n7zmn4WoNoq3pxVJzkCXORVAUv3P7k4TowcZaDc41I9AxrY15bCXt9LxlJ4Gb6why\npagmzeAbwu0SV6IXcgufz2JjdtxFQkOnNNf2d0k7fQhEayek16lhpWpElAFYWSun\nxQpu5bWfs3r8JIyorbSiJNHea8e6hVVdmSiXXrt7QjljiwRUifFC1TqKDvVSheQC\nbixfJuDUOgBphvfDA8JF1VbqDi6yhnbnWpCZT3b91Orlbm0XVo4HSUVUly3bgQBW\nPZxZeoLLhS/LoQXLBoivv3fp9gHyCLGcQX8tZOTUutk1NF9HX1P6FzzmKc/4KjHS\nJqWKlVxAqA==\n-----END CERTIFICATE-----\n\n",
+                "error": ""
+              }
+            }
+        form: {}
+        headers:
+            Authorization:
+                - Bearer 10644d067a80b7ad97b151d6e9fb954ab4b264ebd0860a8912596ce907aa97d4a13221125b634dfbdc7401e1d31f1a13b7aef2e415f0c61b9377190dd87d813e
+            Content-Type:
+                - application/json
+        url: https://home.andylibby.org/api/v1/agents/tucKuJPTYhTSEbEYi2uCk5iT/certificate.json
+        method: POST
+      response:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        transfer_encoding:
+            - chunked
+        trailer: {}
+        content_length: -1
+        uncompressed: false
+        body: '{"message":"created"}'
+        headers:
+            Cache-Control:
+                - max-age=0, private, must-revalidate
+            Content-Security-Policy:
+                - base-uri 'none'; report-uri https://report.trackcsp.com/v1/58ec9e18-748b-4dc0-b451-96d97d622f67
+            Content-Security-Policy-Report-Only:
+                - script-src 'self' 'unsafe-inline' 'unsafe-eval' js-agent.newrelic.com bam.nr-data.net www.googletagmanager.com js.stripe.com chimpstatic.com rebound.postmarkapp.com js.driftt.com; report-uri https://test-report.trackcsp.com/v1/58ec9e18-748b-4dc0-b451-96d97d622f67
+            Content-Type:
+                - application/json; charset=utf-8
+            Etag:
+                - W/"04178cf7b9ed57643ccd24a982e118c4"
+            Server-Timing:
+                - start_processing.action_controller;dur=0.04, sql.active_record;dur=128.00, instantiation.active_record;dur=0.43, process_action.action_controller;dur=156.68
+            Set-Cookie:
+                - _ssltracker_session=BpKtoSvioWzSwFWoOdxmhl%2BuXPahqCPTl12HIPdy%2FbQkF4MsfTkWNnX2%2FbrI%2ByzgmPkP22i5USBz0eFNplYYwUxQzeu27WDJbOOeG0hv6qv9S3UKqpbXKlRqyC2A1lhcKy8VRqPYY2vK6yx5j08k8jer2arePrXFPZvgoJpiZIZCGjqmGp%2F%2B0g60qx02eTvlm5WEdDHy%2BwfkhVnXUGzLZpc1E4wFa1qCxFCsbP5vizatASfRVDDDEWqCX8LvYf0IycoRrPIXXZnfG%2BmjAioucfcKzy3aRrp6iEoQ3saOZA%3D%3D--suv1eiFVW8ii0qNd--B7z3zAWuJm%2FxX0CeFFhEVA%3D%3D; path=/; HttpOnly; SameSite=Lax; secure
+            X-Request-Id:
+                - d06249ab-c5d1-42be-ac6c-168987835ef8
+            X-Runtime:
+                - "0.174165"
+        status: 200 OK
+        code: 200
+        duration: 341.491232ms
