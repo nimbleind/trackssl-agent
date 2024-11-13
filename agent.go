@@ -97,7 +97,7 @@ func (a *Agent) run() {
 	fmt.Printf("Initializing TrackSSL agent with interval %v\n", a.SleepDuration)
 
 	for {
-		fmt.Println("Retriving domain list...")
+		fmt.Println("Retrieving domain list...")
 		domains, err := client.FetchDomains()
 
 		if err != nil {
