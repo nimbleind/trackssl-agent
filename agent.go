@@ -104,7 +104,9 @@ func (a *Agent) run() {
 			fmt.Println(err)
 		}
 
-		if len(domains) > 0 {
+		if len(domains) == 0 {
+			fmt.Println("No domains found")
+		} else {
 			fmt.Printf("Retrieved %d domains\n", len(domains))
 			fmt.Println("Fetching certificates...")
 			for _, domain := range domains {
