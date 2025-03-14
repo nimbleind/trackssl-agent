@@ -11,7 +11,7 @@ For help docs, please see [TrackSSL Documentation](https://trackssl.com/help/).
 ## Installation
 
 You can download a precompiled binary from the
-[releases page](https://github.com/trackssl/trackssl-agent-go/releases).
+[releases page](https://github.com/nimbleind/trackssl-agent/releases).
 
 ## Execution
 
