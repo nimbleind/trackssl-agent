@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@1af3b93fe1f29bc4aabf97c7dfb2963caa7c9a54 # v6.0.0
+
+      - name: Set up Go
+        uses: actions/setup-go@4dc6199c88afc166f63e664d91eb3ace0ae5c1f7 # v6.1.0
+        with:
+          go-version: '1.22'
+
+      - name: Run tests
+        run: make test
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@1af3b93fe1f29bc4aabf97c7dfb2963caa7c9a54 # v6.0.0
+
+      - name: Set up Go
+        uses: actions/setup-go@4dc6199c88afc166f63e664d91eb3ace0ae5c1f7 # v6.1.0
+        with:
+          go-version: '1.22'
+
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@e7fa5ac41e1cf5b7d48e45e42232ce7ada589601 # v9.1.0
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: [test, lint]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@1af3b93fe1f29bc4aabf97c7dfb2963caa7c9a54 # v6.0.0
+
+      - name: Set up Go
+        uses: actions/setup-go@4dc6199c88afc166f63e664d91eb3ace0ae5c1f7 # v6.1.0
+        with:
+          go-version: '1.22'
+
+      - name: Build binaries
+        run: make agent
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@ea165f8e668209c3de6de54f6122c8adeb807e22 # v5.0.0
+        with:
+          name: binaries
+          path: |
+            trackssl-agent-mac
+            trackssl-agent-windows.exe
+            trackssl-agent-linux
